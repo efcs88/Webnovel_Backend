@@ -1,11 +1,20 @@
 package com.efcs.springboot.webnovel.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 
 @Entity
 @Table(name = "novels")
@@ -32,59 +41,4 @@ public class Novel {
     )
     private List<Chapter> chapters= new ArrayList<>();
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getCoverImage() {
-        return coverImage;
-    }
-
-    public void setCoverImage(String coverImage) {
-        this.coverImage = coverImage;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public List<Chapter> getChapters() {
-        return chapters;
-    }
-
-    public void setChapters(List<Chapter> chapters) {
-        this.chapters = chapters;
-    }
 }

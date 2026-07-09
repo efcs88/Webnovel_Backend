@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+
 @Entity()
 @Table(name = "tokens")
 public class Token {
