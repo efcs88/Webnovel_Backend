@@ -4,6 +4,7 @@ import com.efcs.springboot.webnovel.dto.novel.NovelRequest;
 import com.efcs.springboot.webnovel.dto.novel.NovelResponse;
 import com.efcs.springboot.webnovel.entities.Novel;
 import com.efcs.springboot.webnovel.service.NovelService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,14 +17,10 @@ import java.util.Optional;
 @RestController
 @RequestMapping("novels")
 @CrossOrigin({"http://localhost:8080"})
+@RequiredArgsConstructor
 public class NovelController {
 
     private final NovelService service;
-
-
-    public NovelController(NovelService service) {
-        this.service = service;
-    }
 
     @GetMapping
     public ResponseEntity<List<NovelResponse>> list(){
