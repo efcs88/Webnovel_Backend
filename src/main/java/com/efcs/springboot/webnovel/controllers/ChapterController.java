@@ -7,6 +7,7 @@ import com.efcs.springboot.webnovel.service.ChapterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,6 +36,19 @@ public class ChapterController {
         return ResponseEntity.ok(chapters);
     }
 
+    @GetMapping("/novel/{novelId}")
+    public ResponseEntity<List<ChapterResponse>> listChapters(@PathVariable Long novelId, Authentication authentication) {
+        List<ChapterResponse> chapters = service.findByNovelId(novelId)
+                .stream()
+                .map(chapter -> new ChapterResponse(
+                        chapter.getId(),
+                        chapter.getTitle(),
+                        chapter.getContent()
+                ))
+                .toList();
+        return ResponseEntity.ok(chapters);
+    }
+
     @GetMapping("{id}")
     public ResponseEntity<ChapterResponse> details(@PathVariable Long id){
         Optional<Chapter> optionalChapter = service.findById(id);
@@ -53,9 +67,12 @@ public class ChapterController {
     public ResponseEntity<ChapterResponse> create(@RequestBody ChapterRequest request){
         Chapter chapter = new Chapter();
         chapter.setTitle(request.title());
-        chapter.setContent(request.content());
+        chapter.setContent("");
+        System.out.println("titulo"+request.title());
+        System.out.println("Novel id"+request.novelId());
 
-        Chapter savedChapter = service.save(chapter);
+        Chapter savedChapter = service.create(chapter, request.novelId());
+
         ChapterResponse response = new ChapterResponse(
                 savedChapter.getId(),
                 savedChapter.getContent(),
@@ -64,21 +81,9 @@ public class ChapterController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<ChapterResponse> update(@RequestBody Chapter chapter, @PathVariable Long id){
-        Optional<Chapter> optionalChapter = service.findById(id);
-        if (optionalChapter.isPresent()){
-            Chapter chapterDb = optionalChapter.orElseThrow();
-            chapterDb.setContent(chapterDb.getContent());
-            chapterDb.setTitle(chapterDb.getContent());
-            Chapter chapterSaved = service.save(chapterDb);
-            ChapterResponse chapterResponse = new ChapterResponse(
-                    chapterSaved.getId(),
-                    chapterSaved.getTitle(),
-                    chapterSaved.getContent()
-            );
-            return ResponseEntity.status(HttpStatus.CREATED).body(chapterResponse);
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<ChapterResponse> update(@PathVariable Long id, @RequestBody ChapterRequest request) {
+        Chapter saved = service.update(id, request);
+        return ResponseEntity.ok( new ChapterResponse(saved.getId(), saved.getTitle(),saved.getContent()));
     }
 
     @DeleteMapping("{id}")

@@ -53,14 +53,13 @@ public class SecurityConfig {
     }
 
     private void logout(final String token){
-        if (token == null || !token.startsWith("Bearer ")){
+        if (token != null && token.startsWith("Bearer ")){
             final String jwttoken = token.substring(7);
             final Token foundToken = tokenRepository.findByToken(jwttoken)
                     .orElseThrow(() -> new IllegalArgumentException("Invalid token"));
             foundToken.setExpired(true);
             foundToken.setRevoked(true);
             tokenRepository.save(foundToken);
-
         }
     }
 }

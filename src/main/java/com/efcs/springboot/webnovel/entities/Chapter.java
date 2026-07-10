@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "chapters")
-@RequiredArgsConstructor
 public class Chapter {
 
     @Id
@@ -31,5 +30,5 @@ public class Chapter {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
-    
+
 }
