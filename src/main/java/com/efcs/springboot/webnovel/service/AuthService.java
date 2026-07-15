@@ -10,5 +10,5 @@ public interface AuthService {
     Optional<Token> findById(Long id);
     Token save(Token chapter);
     Optional<Token> deleteById(Long id);
-
+    void logout(String authHeader);
 }

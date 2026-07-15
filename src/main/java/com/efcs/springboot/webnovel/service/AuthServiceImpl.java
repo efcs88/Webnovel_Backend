@@ -78,6 +78,20 @@ public class AuthServiceImpl {
             tokenRepository.saveAll(validUserTokens);
         }
     }
+
+    public void logout(final String authHeader){
+        if (authHeader == null || !authHeader.startsWith("Bearer ")){
+            throw new IllegalArgumentException("Invalid Barer token");
+        }
+        final String jwt = authHeader.substring(7);
+        final Token stoToken = tokenRepository.findByToken(jwt)
+                .orElseThrow(() -> new IllegalArgumentException("Token not found"));
+        stoToken.setExpired(true);
+        stoToken.setRevoked(true);
+
+        tokenRepository.save(stoToken);
+    }
+
     public TokenResponse refreshToken(final String authHeader){
         if (authHeader == null || !authHeader.startsWith("Bearer ")){
             throw new IllegalArgumentException("Invalid Barer token");

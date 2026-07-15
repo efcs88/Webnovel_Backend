@@ -47,9 +47,14 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public TokenResponse refreshToken(@RequestHeader(HttpHeaders.AUTHORIZATION) final String authHeader){
-        return service.refreshToken(authHeader);
+    public ResponseEntity<TokenResponse> refreshToken(@RequestHeader(HttpHeaders.AUTHORIZATION) final String authHeader){
+        final TokenResponse token = service.refreshToken(authHeader);
+        return ResponseEntity.ok(token);
     }
 
-
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestHeader(HttpHeaders.AUTHORIZATION) final String authHeader){
+        service.logout(authHeader);
+        return ResponseEntity.ok().build();
+    }
 }
