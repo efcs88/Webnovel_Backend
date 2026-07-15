@@ -80,6 +80,7 @@ public class ChapterController {
         );
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+    
     @PutMapping("/{id}")
     public ResponseEntity<ChapterResponse> update(@PathVariable Long id, @RequestBody ChapterRequest request) {
         Chapter saved = service.update(id, request);

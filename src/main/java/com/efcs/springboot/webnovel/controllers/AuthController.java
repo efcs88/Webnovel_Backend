@@ -39,11 +39,9 @@ public class AuthController {
                 .orElseThrow(() -> {
                     return new EmailNotFoundException("Invalid credentials");
                 });
-
         if (!passwordEncoder.matches(request.password(), user.getPassword())){
             throw new InvalidPasswordException("Invalid credentials");
         }
-
         final TokenResponse token = service.login(request);
         return ResponseEntity.ok(token);
     }
